@@ -14,18 +14,16 @@ fn main() {
         match stream {
             Ok(mut stream) => {
                 println!("accepted new connection");
-                loop {
-                    thread::spawn(|| {
+                    thread::spawn(move || {
                         let mut buf: [u8; 1000] = [0; 1000];
                         stream.read(&mut buf).expect("Couldn't read stream to buffer!");
                         println!("{:?}", buf);
                         stream.write(b"+PONG\r\n").expect("Couldn't respond to PING!");
-                    })
-                }
+                    });
             }
             Err(e) => {
                 println!("error: {}", e);
             }
-        });
+        };
      }
 }
