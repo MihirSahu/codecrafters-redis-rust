@@ -15,9 +15,11 @@ fn main() {
             Ok(mut stream) => {
                 println!("accepted new connection");
                 thread::spawn(move || {
-                    let mut buf: [u8; 1000] = [0; 1000];
-                    stream.read(&mut buf).expect("Couldn't read stream to buffer!");
-                    stream.write(b"+PONG\r\n").expect("Couldn't respond to PING!");
+                    loop {
+                        let mut buf: [u8; 1000] = [0; 1000];
+                        stream.read(&mut buf).expect("Couldn't read stream to buffer!");
+                        stream.write(b"+PONG\r\n").expect("Couldn't respond to PING!");
+                    }
                 });
             }
             Err(e) => {
